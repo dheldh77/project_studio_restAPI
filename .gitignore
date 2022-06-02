@@ -2,6 +2,13 @@
 # Created by https://www.toptal.com/developers/gitignore/api/django
 # Edit at https://www.toptal.com/developers/gitignore?templates=django
 
+### add custom ###
+venv38
+
+
+
+### Default Django Ignore List ###
+
 ### Django ###
 *.log
 *.pot
