@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from studioapp.views import MerchantInfoListAPI
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('studioapp/MerchantInfo/getList', MerchantInfoListAPI.as_view())
 ]
