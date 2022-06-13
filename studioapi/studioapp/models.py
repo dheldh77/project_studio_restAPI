@@ -5,62 +5,48 @@ from django.db import models
 
 class Category(models.Model):
     categoryId = models.AutoField(primary_key=True)
-    categoryName = models.CharField(max_length=30)
-    
+    categoryName = models.CharField(max_length=50)
+
     def __str__(self):
         return self.categoryName
 
 
 class MerchantInfo(models.Model):
     merchantId = models.AutoField(primary_key=True)
-    categoryId = models.OneToOneField(Category, on_delete=models.CASCADE)
-    name = models.CharField(max_length=30)
-    description = models.CharField(max_length=3000)
-    thumbnailId = models.CharField(max_length=256)
+    categories = models.ManyToManyField(Category)
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=3000, null=True)
     address = models.CharField(max_length=256)
-    number = models.CharField(max_length=256)
-    website = models.CharField(max_length=256)
-    price = models.DecimalField(max_digits=10, decimal_places=3)
-    purchaseCount = models.IntegerField()
+    number = models.CharField(max_length=256, null=True)
+    website = models.CharField(max_length=256, null=True)
 
     def __str__(self):
         return self.name
 
 
-class ExternalLink(models.Model):
+class ExternalUrl (models.Model):
     linkId = models.AutoField(primary_key=True)
-    merchantId = models.ForeignKey(MerchantInfo,
+    merchant = models.ForeignKey(MerchantInfo,
                                    on_delete=models.CASCADE)
-    externalLink = models.CharField(max_length=256)
+    externalUrl = models.CharField(max_length=256)
 
     def __str__(self):
         return self.externalLink
 
 
-class Review(models.Model):
-    reviewId = models.AutoField(primary_key=True)
-    merchantId = models.ForeignKey(MerchantInfo,
+class Photo(models.Model):
+    photoId = models.AutoField(primary_key=True)
+    merchant = models.ForeignKey(MerchantInfo,
                                    on_delete=models.CASCADE)
-    author = models.CharField(max_length=100)
-    review = models.CharField(max_length=3000)
-    photoId = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.author
-    
-
-class Gallery(models.Model):
-    galleryId = models.AutoField(primary_key=True)
-    merchantId = models.ForeignKey(MerchantInfo,
-                                   on_delete=models.CASCADE)
-    photoLink = models.CharField(max_length=3000)
+    photoUrl = models.CharField(max_length=3000)
 
     def __str__(self):
         return self.photoLink
-    
 
-class Merchants(models.Model):
-    merchantId = models.AutoField(primary_key=True)
+
+class MerchantLocation(models.Model):
+    locationId = models.AutoField(primary_key=True)
+    merchant = models.OneToOneField(MerchantInfo, on_delete=models.CASCADE)
     longitude = models.DecimalField(max_digits=10, decimal_places=3)
     latitute = models.DecimalField(max_digits=10, decimal_places=3)
     name = models.CharField(max_length=256)
